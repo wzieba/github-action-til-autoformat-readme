@@ -94,7 +94,7 @@ func cmdGetDate(file string) time.Time {
 }
 
 func main() {
-	var absoluteLinkFormat = "https://github.com/blob/master/" + repoName + "/%s"
+	var absoluteLinkFormat = "https://github.com/" + repoName + "/blob/master/%s"
 	// map of all categories and respective TILs
 	tilsMap := make(map[string][]Til)
 	// list of all (non-grouped by category) TILs for use with `list_most_recent` feature
