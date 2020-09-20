@@ -13,6 +13,7 @@ func setup() {
 	inputFooter = ""
 	templatePath = "./README.md.tmpl"
 	inputTilsCounterFormat = "_%d TILs and counting..._"
+	repoName = "user/repository"
 }
 
 func TestOneTil(t *testing.T) {

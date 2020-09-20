@@ -19,6 +19,7 @@ import (
 )
 
 var repoPath = os.Getenv("REPO_PATH")
+var repoName = os.Getenv("GITHUB_REPOSITORY") // Default environment on Github
 var templatePath = os.Getenv("TEMPLATE_PATH")
 var inputDescription = os.Getenv("INPUT_DESCRIPTION")
 var inputFooter = os.Getenv("INPUT_FOOTER")
@@ -30,10 +31,10 @@ var re = regexp.MustCompile(`^Date:\s*`)
 var re2 = regexp.MustCompile(`^#\s*`)
 
 type Til struct {
-	Title     string
-	Filename  string
-	Category  string
-	DateAdded time.Time
+	Title        string
+	AbsoluteLink string
+	Category     string
+	DateAdded    time.Time
 }
 
 // sort TILs by DateAdded (DESC) and return n most recent
@@ -93,6 +94,7 @@ func cmdGetDate(file string) time.Time {
 }
 
 func main() {
+	var absoluteLinkFormat = "https://github.com/" + repoName + "/%s"
 	// map of all categories and respective TILs
 	tilsMap := make(map[string][]Til)
 	// list of all (non-grouped by category) TILs for use with `list_most_recent` feature
@@ -101,18 +103,18 @@ func main() {
 	tils, _ := filepath.Glob(repoPath + "/**/*.md")
 
 	for _, til := range tils {
-		// grab the "category" and the "file"
-		// ex: html/div-tags.md -- category "html" file "div-tags.md"
+		// grab the "category" and the "fileName"
+		// ex: html/div-tags.md -- category "html" fileName "div-tags.md"
 		splitResult := strings.Split(til, "/")
 		length := len(splitResult)
 		category := splitResult[length-2]
-		file := splitResult[length-1]
+		fileName := splitResult[length-1]
 
-		if strings.ToLower(file) == "readme.md" {
+		if strings.ToLower(fileName) == "readme.md" {
 			continue
 		}
 
-		// Read the first line of each file, use the string as a title
+		// Read the first line of each fileName, use the string as a title
 		f, err := os.Open(til)
 		if err != nil {
 			log.Panic(err)
@@ -120,7 +122,7 @@ func main() {
 		reader := bufio.NewReader(f)
 		linkTitle, err := reader.ReadString('\n')
 		if err != nil {
-			log.Println(fmt.Sprintf("ERROR: file \"%s\" does not have > 1 line of text (no title)", file))
+			log.Println(fmt.Sprintf("ERROR: file \"%s\" does not have > 1 line of text (no title)", fileName))
 			log.Panic(err)
 		}
 
@@ -128,13 +130,15 @@ func main() {
 		linkTitle = re2.ReplaceAllString(linkTitle, "")
 		linkTitle = strings.TrimSpace(linkTitle)
 
+		var absoluteLink = fmt.Sprintf(absoluteLinkFormat, category+"/"+fileName)
+
 		// if category first encountered in loop so far, append new map key, otherwise
 		// add to existing
 		tilStruct := Til{
-			Title:     linkTitle,
-			Filename:  file,
-			Category:  category,
-			DateAdded: cmdGetDate(category + "/" + file),
+			Title:        linkTitle,
+			AbsoluteLink: absoluteLink,
+			Category:     category,
+			DateAdded:    cmdGetDate(category + "/" + fileName),
 		}
 
 		if _, exists := tilsMap[category]; exists {

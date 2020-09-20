@@ -6,7 +6,7 @@
 {{ if .MostRecentTils }}
 ### {{ len .MostRecentTils }} most recent TILs
 {{ range $til := .MostRecentTils }}
-- [{{ $til.Title }}]({{ $til.Category }}/{{ $til.Filename }}) - {{$til.DateAdded.Format $.InputDateFormat}}
+- [{{ $til.Title }}]({{ $til.AbsoluteLink }}) - {{$til.DateAdded.Format $.InputDateFormat}}
 {{- end }}
 {{ end }}
 ### Categories
@@ -19,7 +19,7 @@
 
 ### [{{ $category }}](#{{ $category }})
 {{- range $index, $til := $tils }}
-- {{ with $til }}[{{ .Title }}]({{ $category }}/{{ .Filename }}){{- end }}
+- {{ with $til }}[{{ .Title }}]({{ .AbsoluteLink }}){{- end }}
 {{- end }}
 {{- end }}
 
