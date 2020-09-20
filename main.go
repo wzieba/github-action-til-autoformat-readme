@@ -24,6 +24,7 @@ var inputDescription = os.Getenv("INPUT_DESCRIPTION")
 var inputFooter = os.Getenv("INPUT_FOOTER")
 var inputListMostRecent = os.Getenv("INPUT_LIST_MOST_RECENT")
 var inputDateFormat = os.Getenv("INPUT_DATE_FORMAT")
+var inputTilsCounterFormat = os.Getenv("INPUT_TILS_COUNTER_FORMAT")
 
 var re = regexp.MustCompile(`^Date:\s*`)
 var re2 = regexp.MustCompile(`^#\s*`)
@@ -160,19 +161,21 @@ func main() {
 
 	var output bytes.Buffer
 	err = t.Execute(&output, struct {
-		Tils             map[string][]Til
-		AllTils          []string
-		InputDescription string
-		InputFooter      string
-		MostRecentTils   []Til
-		InputDateFormat  string
+		Tils                   map[string][]Til
+		AllTils                []string
+		InputDescription       string
+		InputFooter            string
+		MostRecentTils         []Til
+		InputDateFormat        string
+		InputTilsCounterFormat string
 	}{
-		Tils:             tilsMap,
-		AllTils:          tils,
-		InputDescription: inputDescription,
-		InputFooter:      inputFooter,
-		MostRecentTils:   tilsSlice,
-		InputDateFormat:  inputDateFormat,
+		Tils:                   tilsMap,
+		AllTils:                tils,
+		InputDescription:       inputDescription,
+		InputFooter:            inputFooter,
+		MostRecentTils:         tilsSlice,
+		InputDateFormat:        inputDateFormat,
+		InputTilsCounterFormat: inputTilsCounterFormat,
 	})
 
 	if err != nil {

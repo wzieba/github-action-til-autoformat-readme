@@ -1,13 +1,6 @@
-# TIL
-> Today I Learned
-
-{{ if ne .InputDescription "" }}
 {{- .InputDescription -}}
-{{ else }}
-A collection of concrete writeups of small things I learn daily.
-{{ end }}
 
-_{{ len .AllTils }} TILs and counting..._
+{{ if ne .InputTilsCounterFormat "" }}{{ printf .InputTilsCounterFormat (len .AllTils) }}{{ end }}
 
 ---
 {{ if .MostRecentTils }}

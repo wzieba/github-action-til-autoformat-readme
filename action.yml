@@ -20,6 +20,10 @@ inputs:
     required: false
     description: 'Date format visible on list of most recent TILs. Must follow Go time format guidelines'
     default: '02 Jan 06 15:04 MST'
+  tils_counter_format:
+    required: false
+    description: 'Format of TILs counter label. Must follow Go fmt format guidelines'
+    default: '_%d TILs and counting..._'
 runs:
   using: 'docker'
   image: 'Dockerfile'
