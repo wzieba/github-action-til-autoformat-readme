@@ -14,4 +14,6 @@ COPY --from=builder /go/src/app/entrypoint.sh ./entrypoint.sh
 
 ENTRYPOINT [ "/root/entrypoint.sh" ]
 
+ENV LIST_TEMPLATE_PATH "/root/README.md.tmpl"
+ENV TABLE_TEMPLATE_PATH "/root/README_TABLE.md.tmpl"
 ENV REPO_PATH "/github/workspace"

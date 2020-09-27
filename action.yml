@@ -7,6 +7,9 @@ inputs:
   presentation:
     description: 'TBA'
     required: true
+  repo_name:
+    description: 'TBA'
+    required: true
   description:
     description: 'Description text block featured at the top of your README.md'
     required: false

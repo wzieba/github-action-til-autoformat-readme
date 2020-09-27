@@ -19,13 +19,16 @@ import (
 )
 
 var repoPath = os.Getenv("REPO_PATH")
-var repoName = os.Getenv("GITHUB_REPOSITORY") // Default environment on Github
+var inputRepoName = os.Getenv("INPUT_REPO_NAME")
 var inputDescription = os.Getenv("INPUT_DESCRIPTION")
 var inputFooter = os.Getenv("INPUT_FOOTER")
 var inputListMostRecent = os.Getenv("INPUT_LIST_MOST_RECENT")
 var inputDateFormat = os.Getenv("INPUT_DATE_FORMAT")
 var inputTilsCounterFormat = os.Getenv("INPUT_TILS_COUNTER_FORMAT")
 var inputPresentationType = os.Getenv("INPUT_PRESENTATION")
+var listPath = os.Getenv("LIST_TEMPLATE_PATH")
+var tablePath = os.Getenv("TABLE_TEMPLATE_PATH")
+
 
 var re = regexp.MustCompile(`^Date:\s*`)
 var re2 = regexp.MustCompile(`^#\s*`)
@@ -94,7 +97,7 @@ func cmdGetDate(file string) time.Time {
 }
 
 func main() {
-	var absoluteLinkFormat = "https://github.com/" + repoName + "/blob/master/%s"
+	var absoluteLinkFormat = "https://github.com/" + inputRepoName + "/blob/master/%s"
 	// map of all categories and respective TILs
 	tilsMap := make(map[string][]Til)
 	// list of all (non-grouped by category) TILs for use with `list_most_recent` feature
@@ -162,9 +165,9 @@ func main() {
 	var templateToUse = ""
 	switch inputPresentationType {
 	case "table":
-		templateToUse = "./README_TABLE.md.tmpl"
+		templateToUse = tablePath
 	case "list":
-		templateToUse = "./README.md.tmpl"
+		templateToUse = listPath
 	}
 
 	fmt.Println("------------------------------------------------------------")

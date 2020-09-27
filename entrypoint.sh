@@ -1,7 +1,6 @@
 #!/bin/sh -e
 
-printenv
-#/root/main;
+/root/main;
 #git diff
 #git config --global user.email "readme-bot@example.com"
 #git config --global user.name "README-bot"

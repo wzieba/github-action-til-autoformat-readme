@@ -12,8 +12,10 @@ func setup() {
 	inputDescription = "# TIL\n> Today I Learned\n\n\nA collection of concrete writeups of small things I learn daily.\n\n\n"
 	inputFooter = ""
 	inputTilsCounterFormat = "_%d TILs and counting..._"
-	repoName = "user/repository"
+	inputRepoName = "user/repository"
 	inputPresentationType = "list"
+	listPath = "./README.md.tmpl"
+	tablePath = "./README_TABLE.md.tmpl"
 }
 
 func TestOneTil(t *testing.T) {
