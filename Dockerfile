@@ -9,9 +9,9 @@ RUN apk update && apk add git
 
 COPY --from=builder /go/bin/main ./main
 COPY --from=builder /go/src/app/README.md.tmpl ./README.md.tmpl
+COPY --from=builder /go/src/app/README_TABLE.md.tmpl ./README_TABLE.md.tmpl
 COPY --from=builder /go/src/app/entrypoint.sh ./entrypoint.sh
 
 ENTRYPOINT [ "/root/entrypoint.sh" ]
 
-ENV TEMPLATE_PATH "/root/README.md.tmpl"
 ENV REPO_PATH "/github/workspace"

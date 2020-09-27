@@ -11,9 +11,9 @@ import (
 func setup() {
 	inputDescription = "# TIL\n> Today I Learned\n\n\nA collection of concrete writeups of small things I learn daily.\n\n\n"
 	inputFooter = ""
-	templatePath = "./README.md.tmpl"
 	inputTilsCounterFormat = "_%d TILs and counting..._"
 	repoName = "user/repository"
+	inputPresentationType = "list"
 }
 
 func TestOneTil(t *testing.T) {
@@ -102,6 +102,26 @@ func TestNoCounterLabel(t *testing.T) {
 	repoPath = "./test_data/no_counter_label"
 	inputListMostRecent = "0"
 	inputTilsCounterFormat = ""
+	main()
+	expected, err := ioutil.ReadFile(repoPath + "/README.md.expected")
+	if err != nil {
+		t.Error(err)
+	}
+	actual, err := ioutil.ReadFile(repoPath + "/README.md")
+	if err != nil {
+		t.Error(err)
+	}
+	assert.Equal(t, string(expected), string(actual))
+
+}
+func TestTablePresentationManyTil(t *testing.T) {
+	setup()
+	repoPath = "./test_data/table_presentation_many_til"
+	inputTilsCounterFormat = ""
+	inputDescription = "Header\n"
+	inputPresentationType = "table"
+	inputListMostRecent = "5"
+	inputDateFormat = "02/01/2006"
 	main()
 	expected, err := ioutil.ReadFile(repoPath + "/README.md.expected")
 	if err != nil {

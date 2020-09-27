@@ -1,0 +1,7 @@
+{{- .InputDescription -}}
+{{ if .MostRecentTils }}
+| Name | Category | Date |
+| ---- | -------- | ---- |{{ range $til := .MostRecentTils }}
+| [{{ $til.Title }}]({{ $til.AbsoluteLink }}) | {{ $til.Category }} | {{$til.DateAdded.Format $.InputDateFormat}} |
+{{- end }}
+{{ end }}

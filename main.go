@@ -20,12 +20,12 @@ import (
 
 var repoPath = os.Getenv("REPO_PATH")
 var repoName = os.Getenv("GITHUB_REPOSITORY") // Default environment on Github
-var templatePath = os.Getenv("TEMPLATE_PATH")
 var inputDescription = os.Getenv("INPUT_DESCRIPTION")
 var inputFooter = os.Getenv("INPUT_FOOTER")
 var inputListMostRecent = os.Getenv("INPUT_LIST_MOST_RECENT")
 var inputDateFormat = os.Getenv("INPUT_DATE_FORMAT")
 var inputTilsCounterFormat = os.Getenv("INPUT_TILS_COUNTER_FORMAT")
+var inputPresentationType = os.Getenv("INPUT_PRESENTATION")
 
 var re = regexp.MustCompile(`^Date:\s*`)
 var re2 = regexp.MustCompile(`^#\s*`)
@@ -158,7 +158,21 @@ func main() {
 	cmdTrimMostRecentTils(&tilsSlice, n)
 
 	// load and execute template, write results to README.md
-	t, err := template.New(path.Base(templatePath)).ParseFiles(templatePath)
+
+	var templateToUse = ""
+	switch inputPresentationType {
+	case "table":
+		templateToUse = "./README_TABLE.md.tmpl"
+	case "list":
+		templateToUse = "./README.md.tmpl"
+	}
+
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("Presentation type: " + inputPresentationType)
+	fmt.Println("Templatet to use: " + templateToUse)
+	fmt.Println("------------------------------------------------------------")
+
+	t, err := template.New(path.Base(templateToUse)).ParseFiles(templateToUse)
 	if err != nil {
 		log.Panic(err)
 	}
