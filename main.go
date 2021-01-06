@@ -29,7 +29,6 @@ var inputPresentationType = os.Getenv("INPUT_PRESENTATION")
 var listPath = os.Getenv("LIST_TEMPLATE_PATH")
 var tablePath = os.Getenv("TABLE_TEMPLATE_PATH")
 
-
 var re = regexp.MustCompile(`^Date:\s*`)
 var re2 = regexp.MustCompile(`^#\s*`)
 
@@ -59,7 +58,7 @@ func cmdTrimMostRecentTils(tils *[]Til, n int) {
 // run a git cli command, the capture and parse the output to extract the date
 // a file was added to the repository
 func cmdGetDate(file string) time.Time {
-	c1 := exec.Command("git", "log", "--diff-filter=A", "--date=rfc", "--", file)
+	c1 := exec.Command("git", "log", "--diff-filter=A", "--date=format:%Y-%b-%d", "--", file)
 	c1.Dir = repoPath
 	var commandOutput bytes.Buffer
 	var commandErrorOutput bytes.Buffer
@@ -89,10 +88,20 @@ func cmdGetDate(file string) time.Time {
 		if re.MatchString(outputLine) {
 			// strip "Date: " substring from matching line
 			var strippedDate = re.ReplaceAllString(outputLine, "")
-			date, _ = time.Parse(time.RFC1123Z, strippedDate)
+			date = parseDate(strippedDate)
 			break
 		}
 	}
+	return date
+}
+
+func parseDate(rawDate string) time.Time {
+	date, err := time.Parse("2006-Jan-02", rawDate)
+
+	if err != nil {
+		fmt.Println("error", err)
+	}
+
 	return date
 }
 

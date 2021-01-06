@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"testing"
 	"time"
@@ -134,4 +135,21 @@ func TestTablePresentationManyTil(t *testing.T) {
 		t.Error(err)
 	}
 	assert.Equal(t, string(expected), string(actual))
+}
+
+func TestGitDatesParsing(t *testing.T) {
+	testCases := map[string]time.Time{
+		"2020-Aug-26": time.Date(2020, time.August, 26, 0, 0, 0, 0, time.UTC),
+		"2021-Jan-02": time.Date(2021, time.January, 2, 0, 0, 0, 0, time.UTC),
+	}
+
+	for toParse, expected := range testCases {
+		var result = parseDate(toParse)
+
+		fmt.Println("Expected: " + expected.String())
+		fmt.Println("Result: " + result.String())
+
+		assert.True(t, result.Equal(expected))
+	}
+
 }
